@@ -1,5 +1,10 @@
 body {
     background-color: rgb(40, 40, 40);
+
+    /* Used for sticky footer */
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
 }
 
 p {
@@ -8,4 +13,8 @@ p {
 
 h1 {
     color: white;
+}
+
+main {
+    flex: 1 0 auto;
 }

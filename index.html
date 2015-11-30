@@ -7,7 +7,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/css/materialize.min.css">
 
     <!-- js -->
+    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/js/materialize.min.js"></script>
+    <!-- html includes -->
+    <script>
+      $(function() {
+        $("#footerInclude").load("inc/footer.html");
+      });
+    </script>
   </head>
   <body>
     <nav>
@@ -29,11 +36,12 @@
             I'm Trent Small, and
             <a href="http://lunagameserve.com">Lunagameserve.com</a>
             is my home. I was born and raised in Albuquerque, New
-            Mexico. I'm passionate about programming
+            Mexico. I'm passionate about programming.
 
           </p>
         </div>
       </div>
     </div>
+    <div id="footerInclude"></div>
   </body>
 </html>
