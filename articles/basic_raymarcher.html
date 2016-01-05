@@ -1,0 +1,76 @@
+<html>
+  <head>
+    <title>Luna - Sixstring982's Domain</title>
+
+    <!-- css -->
+    <link rel="stylesheet" href="/css/luna.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/css/materialize.min.css">
+    <link rel="stylesheet" href="/css/sh_style.css">
+
+    <!-- js -->
+    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/js/materialize.min.js"></script>
+    <script src="/js/sh_main.min.js"></script>
+    <script src="/js/sh_glsl.js"></script>
+
+    <!-- html includes -->
+    <script>
+      $(function() {
+        $("#footerInclude").load("/inc/footer.html");
+        $("#glslInclude1").load("/inc/articles/basic_raymarcher_1.frag");
+      });
+    </script>
+  </head>
+  <body onload="sh_highlightDocument();">
+    <nav>
+      <div>
+        <a href="/index.html" class="brand-logo">Luna</a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+          <li><a href="/index.html">Home</a></li>
+          <li class="active"><a href="/articles.html">Articles</a></li>
+          <li><a href="http://github.com/Sixstring982">Github</a></li>
+        </ul>
+      </div>
+    </nav>
+    <div class="container">
+      <div class="row">
+        <div class="col s12">
+          <h1>Basic Raymarcher</h1>
+          <p>
+            Not long ago, I
+            found <a href="http://shadertoy.com">Shadertoy</a>. Since
+            then I've been fascinated with what you can do with just a
+            fragment shader. Using just a fragment shader means that
+            you have to be clever about how to specify the 3D geometry
+            of your scene because the only global state (besides the
+            uniforms) is your code. So, how is this done?
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12 m6">
+          <h4>Model Specification</h4>
+          <p>
+
+          Using standard OpenGL, models are specified with
+          vertices. This won't work here because vertices require
+          state. Instead, we have to specify
+          everything <i>implicitly</i> through a function. This
+          function should take a position <code>vec3</code> and return
+          a <code>float</code>, specifying the distance from the
+          position to the model. The distance at the model's boundary
+          is <code>0</code>, and the distance is negative when a
+          position is inside the model. This is a great way to specify
+          a model in a global way, but it isn't really obvious how you
+          might display it.
+
+          </p>
+        </div>
+        <div class="col s12 m6">
+          <pre id="glslInclude1" class="sh_glsl"></pre>
+        </div>
+      </div>
+    </div> <!-- container -->
+    <div id="footerInclude"></div>
+  </body>
+</html>

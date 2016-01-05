@@ -1,0 +1,201 @@
+<html>
+  <head>
+    <title>Luna - Sixstring982's Domain</title>
+
+    <!-- css -->
+    <link rel="stylesheet" href="/css/luna.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/css/materialize.min.css">
+    <link rel="stylesheet" href="/css/sh_style.css">
+
+    <!-- js -->
+    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/js/materialize.min.js"></script>
+    <script src="/js/sh_main.min.js"></script>
+    <script src="/js/sh_glsl.js"></script>
+
+    <!-- html includes -->
+    <script>
+      $(function() {
+        $("#footerInclude").load("/inc/footer.html");
+        $("#glslInclude1").load("/inc/articles/shadertoy_ram_1.frag");
+        $("#glslInclude2").load("/inc/articles/shadertoy_ram_2.frag");
+        $("#glslInclude3").load("/inc/articles/shadertoy_ram_3.frag");
+        $("#glslInclude4").load("/inc/articles/shadertoy_ram_4.frag");
+        $("#glslInclude5").load("/inc/articles/shadertoy_ram_5.frag");
+      });
+    </script>
+  </head>
+  <body onload="sh_highlightDocument();">
+    <nav>
+      <div>
+        <a href="/index.html" class="brand-logo">Luna</a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+          <li><a href="/index.html">Home</a></li>
+          <li class="active"><a href="/articles.html">Articles</a></li>
+          <li><a href="http://github.com/Sixstring982">Github</a></li>
+        </ul>
+      </div>
+    </nav>
+    <div class="container">
+      <div class="row">
+        <div class="col s12">
+          <h1>RAM in Shadertoy</h1>
+          <p>
+            Recently (in early January
+            2016), <a href="http://shadertoy.com">Shadertoy</a>
+            released a new multipass system. This system allows a user
+            to write multiple shaders and sample them as needed. One
+            of the most basic procedures that can be applied with
+            persistent-state buffers is blurring, but
+            really, <em>any</em> state can be saved and retreived in
+            the fragment shader. This can be applied to do lots of
+            cool things, including making games.
+          </p>
+          <p>
+            This article aims to show how to use Shadertoy's buffer
+            feature in order to store arbitrary data. Note that data
+            needs to be stored in pixel format, which is based on
+            floating point numbers.
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12 m12">
+          <h4>Allocating "RAM"</h4>
+          <p>
+            Part of these new buffers can be used as general purpose
+            floating point RAM. Allocating this buffer is as simple as
+            using a new buffer. In your fragment shader,
+            set <code>ichannel0</code> to be Buffer A, then press the
+            plus sign at the top of the editor and add Buffer A.
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12 m12">
+          <h4>Variable Declaration</h4>
+          <p>
+            All variables are going to need to be declared at compile
+            time. This is a little limiting if you're used to using
+            Java or something like that with dynamic allocation, but
+            with practice it isn't so bad. Variables are going to be
+            accessed by a number as well, but the method described in
+            this article allows for up to 16384 floating point
+            variables to be stored in each buffer.
+          </p>
+          <p>
+            First, we need to build a way to convert 1D indices to 2D
+            coordinates. This is because each of our RAM cells exists
+            in a pixel buffer. The following function converts a 1D
+            index to a 2D coordinate, and should be used in both
+            Buffer A and the image fragment shader.
+          </p>
+        </div>
+      </div>
+      <div class="col s12 m12">
+        <pre id="glslInclude1" class="sh_glsl"></pre>
+      </div>
+      <div class="row">
+        <div class="col s12 m12">
+          <p>
+            Note that RAM_SIZE should be a constant float, usually
+            defined in the preprocessor, that should be less than both
+            the width and height of the shader (Otherwise, the buffer
+            will probably be too small to use it all).
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12 m12">
+          <h4>Initializing RAM</h4>
+          <p>
+            Now that we have a way to convert RAM 1D coordinates to a
+            Buffer location, we can start to initialize the variables
+            we need. Let's say that we want to hold a variable at
+            location <code>345.0</code>, and initialize it to a value
+            of <code>0.5</code>. Well, for each variable, we'll need
+            the following in the <code>mainImage</code> method of our
+            Buffer A:
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12 m12">
+          <pre id="glslInclude2" class="sh_glsl"></pre>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12 m12">
+          <p>
+            Note that this block, starting with the
+            first <code>if</code> statement, must be repeated for each
+            variable needed in RAM.
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12 m12">
+          <h4>Reading RAM</h4>
+          <p>
+            Now that you have some RAM initialized, you can read it in
+            the image fragment shader with the following code:
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12 m12">
+          <pre id="glslInclude3" class="sh_glsl"></pre>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12 m12">
+          <p>
+            This should be used in the image fragment shader, but
+            should also be used in the Buffer A shader as well. This
+            is really the trick to this whole procedure, as we need to
+            write the persistent state back to Buffer A if it does not
+            change. So, we'll change our <code>mainImage</code> method
+            to:
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12 m12">
+          <pre id="glslInclude4" class="sh_glsl"></pre>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12 m12">
+          <h4>Updating RAM</h4>
+          <p>
+            Now that we're able to read the values in RAM, it helps to
+            update values in RAM as well. This is going to be done in
+            the <code>mainImage</code> method of the Buffer A shader
+            as well (because this is really the only place where an
+            update of this state can happen). The following code shows
+            how this can be accomplished:
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12 m12">
+          <pre id="glslInclude5" class="sh_glsl"></pre>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12 m12">
+          <h4>Next Steps</h4>
+          <p>
+            Now that persistent data can be stored in a shader, it is
+            pretty easy to make games with a fragment shader. Although
+            it's a little out of the ordinary to initialize, read, and
+            update variables like this, it works well and allows
+            arbitrary data to be stored in a render buffer. The next
+            steps are really up to you!
+          </p>
+        </div>
+      </div>
+    </div> <!-- container -->
+    <div id="footerInclude"></div>
+  </body>
+</html>
