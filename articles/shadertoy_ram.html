@@ -60,8 +60,12 @@
         </div>
       </div>
       <div class="row">
-        <div class="col s12 m12">
+        <div class="col s12 l12">
           <h4>Allocating "RAM"</h4>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12 l12">
           <p>
             Part of these new buffers can be used as general purpose
             floating point RAM. Allocating this buffer is as simple as
@@ -73,8 +77,12 @@
         </div>
       </div>
       <div class="row">
-        <div class="col s12 m12">
+        <div class="col s12 l12">
           <h4>Variable Declaration</h4>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12 l6">
           <p>
             All variables are going to need to be declared at compile
             time. This is a little limiting if you're used to using
@@ -92,9 +100,9 @@
             Buffer A and the image fragment shader.
           </p>
         </div>
-      </div>
-      <div class="col s12 m12">
-        <pre id="glslInclude1" class="sh_glsl"></pre>
+        <div class="col s12 l6">
+          <pre id="glslInclude1" class="sh_glsl"></pre>
+        </div>
       </div>
       <div class="row">
         <div class="col s12 m12">
@@ -109,6 +117,13 @@
       <div class="row">
         <div class="col s12 m12">
           <h4>Initializing RAM</h4>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12 l6">
+          <pre id="glslInclude2" class="sh_glsl"></pre>
+        </div>
+        <div class="col s12 l6">
           <p>
             Now that we have a way to convert RAM 1D coordinates to a
             Buffer location, we can start to initialize the variables
@@ -118,11 +133,6 @@
             the following in the <code>mainImage</code> method of our
             Buffer A:
           </p>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col s12 m12">
-          <pre id="glslInclude2" class="sh_glsl"></pre>
         </div>
       </div>
       <div class="row">
@@ -137,19 +147,24 @@
       <div class="row">
         <div class="col s12 m12">
           <h4>Reading RAM</h4>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12 l6">
           <p>
             Now that you have some RAM initialized, you can read it in
             the image fragment shader with the following code:
           </p>
         </div>
-      </div>
-      <div class="row">
-        <div class="col s12 m12">
+        <div class="col s12 l6">
           <pre id="glslInclude3" class="sh_glsl"></pre>
         </div>
       </div>
       <div class="row">
-        <div class="col s12 m12">
+        <div class="col s12 l6">
+          <pre id="glslInclude4" class="sh_glsl"></pre>
+        </div>
+        <div class="col s12 l6">
           <p>
             This should be used in the image fragment shader, but
             should also be used in the Buffer A shader as well. This
@@ -162,12 +177,11 @@
       </div>
       <div class="row">
         <div class="col s12 m12">
-          <pre id="glslInclude4" class="sh_glsl"></pre>
+          <h4>Updating RAM</h4>
         </div>
       </div>
       <div class="row">
-        <div class="col s12 m12">
-          <h4>Updating RAM</h4>
+        <div class="col s12 l6">
           <p>
             Now that we're able to read the values in RAM, it helps to
             update values in RAM as well. This is going to be done in
@@ -177,9 +191,7 @@
             how this can be accomplished:
           </p>
         </div>
-      </div>
-      <div class="row">
-        <div class="col s12 m12">
+        <div class="col s12 l6">
           <pre id="glslInclude5" class="sh_glsl"></pre>
         </div>
       </div>
