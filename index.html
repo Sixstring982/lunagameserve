@@ -9,27 +9,17 @@
     <!-- js -->
     <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/js/materialize.min.js"></script>
+    <script src="./build/app.bundle.js"></script>
 
     <!-- html includes -->
     <script>
-      $(function() {
-        $("#footerInclude").load("inc/footer.html");
-      });
+      window.onload = function() {
+        app.insertHeaderFooter('Home');
+      };
     </script>
   </head>
   <body>
-    <nav>
-      <div>
-        <a href="/index.html" class="brand-logo">Luna</a>
-        <ul id="nav-mobile" class="right hide-on-med-and-down">
-          <li class="active"><a href="/index.html">Home</a></li>
-          <li><a href="/articles.html">Articles</a></li>
-          <li><a href="/games.html">Games</a></li>
-          <li><a href="/resume.pdf">Resume</a></li>
-          <li><a href="http://github.com/Sixstring982">Github</a></li>
-        </ul>
-      </div>
-    </nav>
+    <div id="headerInclude"></div>
     <div class="container">
       <div class="row">
         <div class="col s12">
@@ -70,7 +60,7 @@
               </span>
               <p>
 
-                Here's some games that I've worked on.
+                Here are some games that I've worked on.
 
               </p>
             </div>
@@ -89,6 +79,21 @@
                 Here's my resume if you feel like looking at it. It
                 should be up to date, but let me know if you don't
                 think it is.
+
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col s12 m6">
+          <div class="card blue-grey darken-1">
+            <div class="card-content white-text">
+              <span class="card-title">
+                <a href="interactive.html">Interactive</a>
+              </span>
+              <p>
+
+                Here are some interactive toys that you can play with
+                in your browser.
 
               </p>
             </div>

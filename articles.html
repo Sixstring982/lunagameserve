@@ -9,27 +9,17 @@
     <!-- js -->
     <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/js/materialize.min.js"></script>
+    <script src="./build/app.bundle.js"></script>
 
     <!-- html includes -->
     <script>
-      $(function() {
-        $("#footerInclude").load("inc/footer.html");
-      });
+      window.onload = function() {
+        app.insertHeaderFooter('Articles');
+      };
     </script>
   </head>
   <body>
-    <nav>
-      <div>
-        <a href="/index.html" class="brand-logo">Luna</a>
-        <ul id="nav-mobile" class="right hide-on-med-and-down">
-          <li><a href="/index.html">Home</a></li>
-          <li class="active"><a href="/articles.html">Articles</a></li>
-          <li><a href="/games.html">Games</a></li>
-          <li><a href="/resume.pdf">Resume</a></li>
-          <li><a href="http://github.com/Sixstring982">Github</a></li>
-        </ul>
-      </div>
-    </nav>
+    <div id="headerInclude"></div>
     <div class="container">
       <div class="row">
         <div class="col s12">

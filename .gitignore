@@ -1,3 +1,7 @@
 # emacs crap
 *~
 [#]*[#]
+
+# Node
+node_modules/
+build/
