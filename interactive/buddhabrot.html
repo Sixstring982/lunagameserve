@@ -21,19 +21,72 @@
   <body>
     <div id="headerInclude"></div>
     <div class="container">
-      <h3>Buddhabrot</h3>
+      <div class="row">
+        <div class="col s12">
+          <h3>Buddhabrot</h3>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12">
+          <p>
+
+            The Buddhabrot is a special rendering of the Mandelbrot
+            set which keeps track of the location that each iteration
+            of each point. Because it has to keep track of many
+            points, this particular visualization takes a while to
+            render. Tweak the controls on the right to change the
+            rendering outcome.
+
+          </p>
+        </div>
+      </div>
       <div class="row">
         <div class="col s4">
           <div class="card blue-grey darken-1">
             <div class="card-content white-text">
-              <span class="card-title">Settings</span>
-              <div class="form">
-                <label for="scaleRange">Scale</label>
+              <span class="card-title">Generator</span>
+
+              <div id="generatorForm" class="form">
+                <label id="scaleRangeLabel" for="scaleRange">Scale (300x200)</label>
                 <p class="range-field tooltipped" data-position="top" data-delay="200"
                    data-tooltip="Scale multiplier. Scale of 1 means canvas of 300x200.">
                   <input type="range" id="scaleRange" min="0.25" max="8.0" step="0.25" value="1.0" />
                 </p>
+                <label id="iterRangeLabel" for="iterRange">Iterations (1024)</label>
+                <p class="range-field tooltipped" data-position="top" data-delay="200"
+                   data-tooltip="Iterations for each trail.">
+                  <input type="range" id="iterRange" min="16" max="4096" step="16" value="1024" />
+                </p>
                 <a id="generateButton" class="waves-effect waves-light btn white-text">Generate</a>
+              </div>
+
+              <span class="card-title">Rendering</span>
+              <div id="renderForm" class="form">
+                <label id="redLimitRangeLabel" for="redLimitRange">Red Limit (2)</label>
+                <p class="range-field tooltipped" data-position="top" data-delay="200"
+                   data-tooltip="Upper limit for rendering red values (logarithmic).">
+                  <input type="range" id="redLimitRange" min="0" max="32" step="1" value="1" />
+                </p>
+                <label id="greenLimitRangeLabel" for="greenLimitRange">Green Limit (16)</label>
+                <p class="range-field tooltipped" data-position="top" data-delay="200"
+                   data-tooltip="Upper limit for rendering green values (logarithmic).">
+                  <input type="range" id="greenLimitRange" min="0" max="32" step="1" value="4" />
+                </p>
+                <label id="blueLimitRangeLabel" for="blueLimitRange">Blue Limit (32)</label>
+                <p class="range-field tooltipped" data-position="top" data-delay="200"
+                   data-tooltip="Upper limit for rendering blue values (logarithmic).">
+                  <input type="range" id="blueLimitRange" min="0" max="32" step="1" value="5" />
+                </p>
+                <label id="pointsPerRenderRangeLabel" for="pointsPerRenderRange">Points per render (1)</label>
+                <p class="range-field tooltipped" data-position="top" data-delay="200"
+                   data-tooltip="Iterations per render. Lowering speeds up render time.">
+                  <input type="range" id="pointsPerRenderRange" min="1" max="1000" step="1" value="1" />
+                </p>
+                <label id="contrastRangeLabel" for="contrastRange">Contrast Level (2)</label>
+                <p class="range-field tooltipped" data-position="top" data-delay="200"
+                   data-tooltip="Logarithmic contrast.">
+                  <input type="range" id="contrastRange" min="1" max="20" step="1" value="2" />
+                </p>
               </div>
             </div>
           </div>
@@ -42,6 +95,7 @@
           <div class="card orange darken-4">
             <div class="card-content white-text">
               <span class="card-title">Canvas</span>
+              <br>
               <canvas id="buddhabrotCanvas" width="0" height="0"></canvas>
             </div>
           </div>
