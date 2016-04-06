@@ -1,5 +1,5 @@
 export default class Mandelbrot {
-  static getBuddhaTrail(c, iters) {
+  static getBuddhaTrail(anti, c, iters) {
     const trail = [];
     const z = {
       r: c.r,
@@ -16,6 +16,6 @@ export default class Mandelbrot {
       z.i = 2 * z.r * z.i + c.i;
       z.r = tr;
     }
-    return [];
+    return anti ? trail : [];
   }
 }

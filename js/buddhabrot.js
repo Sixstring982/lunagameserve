@@ -3,8 +3,6 @@ import Image2d from './image2d.js';
 
 const getScale = () => document.getElementById('scaleRange').value;
 
-const getIters = () => document.getElementById('iterRange').value;
-
 const getContrast = () => document.getElementById('contrastRange').value;
 
 const getCanvas = () => document.getElementById('buddhabrotCanvas');
@@ -16,6 +14,8 @@ const getRedLimit = () => Math.pow(2, document.getElementById('redLimitRange').v
 const getGreenLimit = () => Math.pow(2, document.getElementById('greenLimitRange').value);
 
 const getBlueLimit = () => Math.pow(2, document.getElementById('blueLimitRange').value);
+
+const isAnti = () => document.getElementById('antiCheckbox').checked;
 
 const getDimensions = () => {
   const INITIAL_WIDTH = 300;
@@ -34,19 +34,17 @@ const setFormEnabled = (formId, enabled) => {
   const opacity = enabled ? 1.0 : 0.5;
   for (let i = 0; i < inputs.length; i++) {
     inputs[i].readOnly = !enabled;
-    inputs[i].style = `opacity: ${opacity}`;
+    inputs[i].style.opacity = opacity;
   }
 };
 
 class Generator {
-  static init(ppr, iters, contrast, red, green, blue) {
+  static init(ppr, iters, contrast, anti) {
     this.ppr = ppr;
     this.iters = iters;
     this.logLevel = contrast;
-    this.red = red;
-    this.green = green;
-    this.blue = blue;
     this.running = false;
+    this.anti = anti;
   }
 
   static set pointsPerRender(ppr) {
@@ -55,18 +53,6 @@ class Generator {
 
   static set contrast(contrast) {
     this.logLevel = contrast;
-  }
-
-  static set redLimit(redLimit) {
-    this.red = redLimit;
-  }
-
-  static set greenLimit(greenLimit) {
-    this.green = greenLimit;
-  }
-
-  static set blueLimit(blueLimit) {
-    this.blue = blueLimit;
   }
 
   static isRunning() {
@@ -78,7 +64,7 @@ class Generator {
     for (let x = 0; x < image.width; x++) {
       const bin = [];
       for (let y = 0; y < image.height; y++) {
-        bin.push(0);
+        bin.push([0, 0, 0]);
       }
       bins.push(bin);
     }
@@ -86,24 +72,25 @@ class Generator {
   }
 
   static renderBins(image, bins) {
+    const maxBin = [0, 0, 0];
     for (let x = 0; x < image.width; x++) {
       for (let y = 0; y < image.height; y++) {
-        let red = 0;
-        let green = 0;
-        let blue = 0;
-        if (Generator.red > 0) {
-          red = (bins[x][y] > Generator.red) ? 255 :
-            Math.round(255.0 * (bins[x][y] / Generator.red));
+        for (let i = 0; i < 3; i++) {
+          maxBin[i] = Math.max(maxBin[i], bins[x][y][i]);
         }
-        if (Generator.green > 0) {
-          green = (bins[x][y] > Generator.green) ? 255 :
-            Math.round(255.0 * (bins[x][y] / Generator.green));
+      }
+    }
+
+    const logLevel = Generator.logLevel;
+    const px = [0, 0, 0];
+    for (let x = 0; x < image.width; x++) {
+      for (let y = 0; y < image.height; y++) {
+        for (let i = 0; i < 3; i++) {
+          px[i] = 255.0 *
+            (Math.log2(1.0 + ((bins[x][y][i] / maxBin[i]) *
+                              (Math.pow(2, logLevel) - 1.0))) / logLevel);
         }
-        if (Generator.blue > 0) {
-          blue = (bins[x][y] > Generator.blue) ? 255 :
-            Math.round(255.0 * (bins[x][y] / Generator.blue));
-        }
-        image.setPixel(x, y, red, green, blue);
+        image.setPixel(x, y, px[0], px[1], px[2]);
       }
     }
 
@@ -121,15 +108,17 @@ class Generator {
       i: Math.random() * 2.0 - 1.0,
     };
 
-    const trail = Mandelbrot.getBuddhaTrail(c, Generator.iters);
+    for (let color = 0; color < 3; color++) {
+      const trail = Mandelbrot.getBuddhaTrail(Generator.anti, c, Generator.iters[color]);
 
-    for (let i = 0; i < trail.length; i++) {
-      const tx = Math.round(((trail[i].r + 2.0) / 3.0) * image.width);
-      const ty = Math.round(((trail[i].i + 1.0) / 2.0) * image.height);
-      const otherY = image.height - ty;
-      if (tx >= 0 && ty >= 0 && tx < image.width && ty < image.height) {
-        bins[tx][ty]++;
-        bins[tx][otherY]++;
+      for (let i = 0; i < trail.length; i++) {
+        const tx = Math.round(((trail[i].r + 2.0) / 3.0) * image.width);
+        const ty = Math.round(((trail[i].i + 1.0) / 2.0) * image.height);
+        const otherY = image.height - ty - 1;
+        if (tx >= 0 && ty >= 0 && tx < image.width && ty < image.height) {
+          bins[tx][ty][color]++;
+          bins[tx][otherY][color]++;
+        }
       }
     }
 
@@ -167,13 +156,6 @@ document.getElementById('scaleRange').addEventListener('input', () => {
   const { width, height } = getDimensions();
 
   label.innerHTML = `Scale (${width}x${height})`;
-});
-
-document.getElementById('iterRange').addEventListener('input', () => {
-  const label = document.getElementById('iterRangeLabel');
-  const iters = getIters();
-
-  label.innerHTML = `Iterations (${iters})`;
 });
 
 document.getElementById('redLimitRange').addEventListener('input', () => {
@@ -228,9 +210,9 @@ document.getElementById('generateButton').addEventListener('click', () => {
     Generator.stop();
     button.innerHTML = 'Generate';
   } else {
+    Generator.init(getPpr(), [getRedLimit(), getGreenLimit(), getBlueLimit()],
+                   getContrast(), isAnti());
     Generator.start();
     button.innerHTML = 'Stop';
   }
 });
-
-Generator.init(getPpr(), getIters(), getContrast(), getRedLimit(), getGreenLimit(), getBlueLimit());

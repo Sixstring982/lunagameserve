@@ -6,6 +6,15 @@ export default class Image2d {
     this.image = this.g.createImageData(this.width, this.height);
   }
 
+  getPixel(x, y) {
+    const idx = this.coordToIndex(x, y);
+    return {
+      r: this.image.data[idx],
+      g: this.image.data[idx + 1],
+      b: this.image.data[idx + 2],
+    };
+  }
+
   setPixel(x, y, r, g, b) {
     this.setRed(x, y, r);
     this.setGreen(x, y, g);

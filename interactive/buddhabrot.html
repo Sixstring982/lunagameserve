@@ -34,8 +34,8 @@
             set which keeps track of the location that each iteration
             of each point. Because it has to keep track of many
             points, this particular visualization takes a while to
-            render. Tweak the controls on the right to change the
-            rendering outcome.
+            render. Tweak the controls to change the rendering
+            outcome.
 
           </p>
         </div>
@@ -52,16 +52,6 @@
                    data-tooltip="Scale multiplier. Scale of 1 means canvas of 300x200.">
                   <input type="range" id="scaleRange" min="0.25" max="8.0" step="0.25" value="1.0" />
                 </p>
-                <label id="iterRangeLabel" for="iterRange">Iterations (1024)</label>
-                <p class="range-field tooltipped" data-position="top" data-delay="200"
-                   data-tooltip="Iterations for each trail.">
-                  <input type="range" id="iterRange" min="16" max="4096" step="16" value="1024" />
-                </p>
-                <a id="generateButton" class="waves-effect waves-light btn white-text">Generate</a>
-              </div>
-
-              <span class="card-title">Rendering</span>
-              <div id="renderForm" class="form">
                 <label id="redLimitRangeLabel" for="redLimitRange">Red Limit (2)</label>
                 <p class="range-field tooltipped" data-position="top" data-delay="200"
                    data-tooltip="Upper limit for rendering red values (logarithmic).">
@@ -77,6 +67,15 @@
                    data-tooltip="Upper limit for rendering blue values (logarithmic).">
                   <input type="range" id="blueLimitRange" min="0" max="32" step="1" value="5" />
                 </p>
+                <p>
+                  <input type="checkbox" id="antiCheckbox" />
+                  <label for="antiCheckbox">Anti-Buddhabrot</label>
+                </p>
+                <a id="generateButton" class="waves-effect waves-light btn white-text">Generate</a>
+              </div>
+
+              <span class="card-title">Rendering</span>
+              <div id="renderForm" class="form">
                 <label id="pointsPerRenderRangeLabel" for="pointsPerRenderRange">Points per render (1)</label>
                 <p class="range-field tooltipped" data-position="top" data-delay="200"
                    data-tooltip="Iterations per render. Lowering speeds up render time.">
