@@ -1,14 +1,14 @@
-export const changeXResolution = (xRes) => ({
-  type: 'CHANGE_X_RESOLUTION',
-  xRes,
+export const changeWidth = (width) => ({
+  type: 'CHANGE_WIDTH',
+  width,
 });
 
-export const changeYResolution = (yRes) => ({
-  type: 'CHANGE_Y_RESOLUTION',
-  yRes,
+export const changeHeight = (height) => ({
+  type: 'CHANGE_HEIGHT',
+  height,
 });
 
-export const attachCanvas = (canvas) => ({
-  type: 'ATTACH_CANVAS',
-  canvas,
+export const setCanvasContext = (g) => ({
+  type: 'SET_CANVAS_CONTEXT',
+  g,
 });

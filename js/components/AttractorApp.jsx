@@ -1,6 +1,6 @@
 import React from 'react';
-import AttractorSettings from './AttractorSettings.jsx';
-import AttractorCanvas from './AttractorCanvas.jsx';
+import AttractorSettings from '../containers/AttractorSettings.jsx';
+import AttractorCanvas from '../containers/AttractorCanvas.jsx';
 
 const AttractorApp = () => (
   <div className="row">
