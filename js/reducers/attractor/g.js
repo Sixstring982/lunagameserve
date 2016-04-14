@@ -17,11 +17,9 @@ const renderOnContext = (g, cfunc) => {
 };
 
 const clearContext = (g) => {
-  renderOnContext(g, (_x, _y) => 0);
-};
-
-const renderPixels = (g, pixels) => {
-  renderOnContext(g, (x, y) => pixels[x][y]);
+  renderOnContext(g, (_x, _y) => ({
+    r: 0, g: 0, b: 0,
+  }));
 };
 
 const g = (state = null, action) => {
@@ -29,8 +27,8 @@ const g = (state = null, action) => {
     case 'SET_CANVAS_CONTEXT':
       clearContext(action.g);
       return action.g;
-    case 'RENDER_PIXELS':
-      renderPixels(state.g, action.pixels);
+    case 'RENDER_ON_CONTEXT':
+      renderOnContext(state, action.cfunc);
       return state;
     default:
       return state;

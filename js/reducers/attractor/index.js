@@ -1,12 +1,12 @@
 import { combineReducers } from 'redux';
-import width from './width';
-import height from './height';
+import resolution from './resolution';
 import g from './g';
+import window from './window';
 
 const AttractorReducers = combineReducers({
-  width,
-  height,
   g,
+  window,
+  resolution,
 });
 
 export default AttractorReducers;

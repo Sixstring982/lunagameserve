@@ -9,7 +9,7 @@ const Slider = ({
   onChange,
 }) => (
   <p className="range-field">
-    <label>{name}: ({value})</label>
+    <label>{name}</label>
     <input type="range" min={min} max={max}
       step={step} value={value}
       onChange={e => onChange(e.currentTarget.valueAsNumber)}
