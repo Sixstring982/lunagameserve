@@ -8,27 +8,51 @@ export const setCanvasContext = (g) => ({
   g,
 });
 
-export const renderOnContext = (cfunc) => ({
-  type: 'RENDER_ON_CONTEXT',
+export const zoomWindow = ({ x, y }, cfunc) => ({
+  type: 'ZOOM_WINDOW',
+  x,
+  y,
   cfunc,
 });
 
-export const setWindowX = (x) => ({
-  type: 'SET_WINDOW_X',
-  x,
+export const resetWindow = (cfunc) => ({
+  type: 'RESET_WINDOW',
+  cfunc,
 });
 
-export const setWindowY = (y) => ({
-  type: 'SET_WINDOW_Y',
-  y,
+export const renderMandelbrot = (cfunc) => ({
+  type: 'RENDER_MANDELBROT',
+  cfunc,
 });
 
-export const setWindowWidth = (width) => ({
-  type: 'SET_WINDOW_WIDTH',
-  width,
+export const setIterations = (iterations) => ({
+  type: 'SET_ITERATIONS',
+  iterations,
 });
 
-export const setWindowHeight = (height) => ({
-  type: 'SET_WINDOW_HEIGHT',
-  height,
+export const setGenerator = (generator) => ({
+  type: 'SET_GENERATOR',
+  generator,
+});
+
+export const renderGenerator = (window, generator) => ({
+  type: 'RENDER_GENERATOR',
+  window,
+  generator,
+});
+
+export const setPaletteChannel = (channel) => ({
+  type: 'SET_PALETTE_CHANNEL',
+  channel,
+});
+
+export const setPaletteComponent = (channel, component, value) => ({
+  type: 'SET_PALETTE_COMPONENT',
+  channel,
+  component,
+  value,
+});
+
+export const initialize = () => ({
+  type: 'INITIALIZE',
 });

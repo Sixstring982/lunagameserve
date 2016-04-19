@@ -5,7 +5,7 @@ module.exports = {
   entry: {
     app: './js/main.js',
     buddhabrot: './js/buddhabrot.js',
-    attractor: './js/attractor.jsx'
+    mandelbrot: './js/mandelbrot.jsx'
   },
   output: {
     path: path.resolve(__dirname, 'build'),
@@ -34,5 +34,5 @@ module.exports = {
   stats: {
     colors: true
   },
-  // devtool: 'source-map'
+  devtool: 'source-map'
 };

@@ -1,59 +1,35 @@
-import { setCanvasContext, renderOnContext } from '../actions/AttractorActions.js';
+import { zoomWindow } from '../actions/AttractorActions.js';
 import { getResolution } from '../resolution';
 import { connect } from 'react-redux';
+import { convertEventCoords } from 'canvas-utils';
 import Canvas from '../components/Canvas.jsx';
-
-const CANVAS_ID = 'attractorCanvas';
 
 const mapStateToProps = (state) => {
   const { width, height } = getResolution(state.resolution);
   return {
     title: 'Canvas',
-    id: CANVAS_ID,
+    id: state.mandelbrot.canvasId,
     width,
     height,
-    onClickArgs: () => ({
-      window: state.window,
-      width: state.width,
-      height: state.height,
-    }),
+    onClickArgs: {
+      window: state.mandelbrot.window,
+      resolution: getResolution(state.resolution),
+      cfunc: t => state.palette.cfunc(t, state.palette.components),
+    },
   };
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  mountCallback: () => {
-    const canvas = document.getElementById(CANVAS_ID);
-    if (canvas === null) {
-      setTimeout(this.mountCallback, 1);
-    } else {
-      const g = canvas.getContext('2d');
-      dispatch(setCanvasContext(g));
-    }
-  },
-  onClick: (_e, state) => {
+  onClick: (e, state) => {
     const win = state.window;
-    const width = state.width;
-    const height = state.height;
-    /*
-    const rect = e.target.getBoundingClientRect();
-    const canvasCoords = {
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
-    };
-    */
-    const mapToWindow = (x, y) => ({
+    const { width, height } = state.resolution;
+    const mapToWindow = ({ x, y }) => ({
       x: ((x / width) * win.width) + win.x,
       y: ((y / height) * win.height) + win.y,
     });
-    // const windowCoords = mapToWindow(canvasCoords);
-    dispatch(renderOnContext((x, y) => {
-      const px = mapToWindow(x, y);
-      return {
-        r: Math.abs(px.x) * 255,
-        g: Math.abs(px.y) * 255,
-        b: 0,
-      };
-    }));
+    const canvasCoords = convertEventCoords(e, e.target);
+    const center = mapToWindow(canvasCoords);
+    dispatch(zoomWindow(center, state.cfunc));
   },
 });
 

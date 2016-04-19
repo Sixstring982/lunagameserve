@@ -1,12 +1,12 @@
 import { combineReducers } from 'redux';
 import resolution from './resolution';
-import g from './g';
-import window from './window';
+import mandelbrot from './mandelbrot';
+import palette from './palette';
 
 const AttractorReducers = combineReducers({
-  g,
-  window,
   resolution,
+  mandelbrot,
+  palette,
 });
 
 export default AttractorReducers;
