@@ -1,9 +1,9 @@
 import React from 'react';
-import AttractorSettings from '../containers/AttractorSettings.jsx';
-import AttractorCanvas from '../containers/AttractorCanvas.jsx';
-import AttractorPalette from '../containers/AttractorPalette';
+import MandelbrotSettings from '../containers/MandelbrotSettings.jsx';
+import MandelbrotCanvas from '../containers/MandelbrotCanvas.jsx';
+import MandelbrotPalette from '../containers/MandelbrotPalette';
 
-const AttractorApp = () => (
+const MandelbrotApp = () => (
   <div className="container">
     <div className="row">
       <div className="col s12">
@@ -24,14 +24,14 @@ const AttractorApp = () => (
     </div>
     <div className="row">
       <div className="col s4">
-        <AttractorSettings />
-        <AttractorPalette />
+        <MandelbrotSettings />
+        <MandelbrotPalette />
       </div>
       <div className="col s8">
-        <AttractorCanvas />
+        <MandelbrotCanvas />
       </div>
     </div>
   </div>
 );
 
-export default AttractorApp;
+export default MandelbrotApp;

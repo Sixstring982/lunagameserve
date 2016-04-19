@@ -2,15 +2,15 @@ import React from 'react';
 import { render } from 'react-dom';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
-import AttractorReducers from './reducers/attractor/';
-import { initialize } from './actions/AttractorActions';
-import AttractorApp from './components/AttractorApp.jsx';
+import MandelbrotReducers from './reducers/mandelbrot/';
+import { initialize } from './actions/MandelbrotActions';
+import MandelbrotApp from './components/MandelbrotApp.jsx';
 
-let store = createStore(AttractorReducers);
+let store = createStore(MandelbrotReducers);
 
 render(
   <Provider store={store}>
-    <AttractorApp />
+    <MandelbrotApp />
   </Provider>,
   document.getElementById('root')
 );

@@ -1,5 +1,5 @@
 import Palette from '../components/Palette.jsx';
-import { setPaletteChannel, setPaletteComponent } from '../actions/AttractorActions';
+import { setPaletteChannel, setPaletteComponent } from '../actions/MandelbrotActions';
 import { connect } from 'react-redux';
 
 const mapStateToProps = (state) => ({
@@ -14,9 +14,9 @@ const mapDispatchToProps = (dispatch) => ({
   onComponentChange: (c, i, v) => dispatch(setPaletteComponent(c, i, v)),
 });
 
-const AttractorPalette = connect(
+const MandelbrotPalette = connect(
   mapStateToProps,
   mapDispatchToProps
 )(Palette);
 
-export default AttractorPalette;
+export default MandelbrotPalette;

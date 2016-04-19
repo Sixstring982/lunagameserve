@@ -1,4 +1,4 @@
-import { zoomWindow } from '../actions/AttractorActions.js';
+import { zoomWindow } from '../actions/MandelbrotActions.js';
 import { getResolution } from '../resolution';
 import { connect } from 'react-redux';
 import { convertEventCoords } from 'canvas-utils';
@@ -33,9 +33,9 @@ const mapDispatchToProps = (dispatch) => ({
   },
 });
 
-const AttractorCanvas = connect(
+const MandelbrotCanvas = connect(
   mapStateToProps,
   mapDispatchToProps
 )(Canvas);
 
-export default AttractorCanvas;
+export default MandelbrotCanvas;

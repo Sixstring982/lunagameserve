@@ -3,10 +3,10 @@ import resolution from './resolution';
 import mandelbrot from './mandelbrot';
 import palette from './palette';
 
-const AttractorReducers = combineReducers({
+const MandelbrotReducers = combineReducers({
   resolution,
   mandelbrot,
   palette,
 });
 
-export default AttractorReducers;
+export default MandelbrotReducers;

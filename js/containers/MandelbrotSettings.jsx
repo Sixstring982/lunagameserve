@@ -1,5 +1,5 @@
 import { setResolution, renderMandelbrot,
-         setIterations, resetWindow } from '../actions/AttractorActions.js';
+         setIterations, resetWindow } from '../actions/MandelbrotActions.js';
 import { getResolution, getResolutionCount } from '../resolution';
 import { connect } from 'react-redux';
 import SettingsForm from '../components/SettingsForm.jsx';
@@ -73,9 +73,9 @@ const mapDispatchToProps = (dispatch) => ({
   },
 });
 
-const AttractorSettings = connect(
+const MandelbrotSettings = connect(
   mapStateToProps,
   mapDispatchToProps
 )(SettingsForm);
 
-export default AttractorSettings;
+export default MandelbrotSettings;
