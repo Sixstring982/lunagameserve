@@ -1,28 +1,40 @@
-import React, { PropTypes } from 'react';
+import React, { PropTypes, Component } from 'react';
 
-const Canvas = ({
-  title,
-  id,
-  width,
-  height,
-  onClick,
-  onClickArgs,
-}) => {
-  let titleElement = null;
-  if (title !== '') {
-    titleElement = <span className="card-title">{title}</span>;
+class Canvas extends Component {
+  componentDidMount() {
+    if (this.props.shouldRender) {
+      this.props.triggerRender();
+    }
   }
-  return (
-    <div className="card orange darken-4 white-text">
-      <div className="card-content">
-      {titleElement}
-        <br />
-        <canvas id={id} width={width} height={height} onClick={e => onClick(e, onClickArgs)}>
-        </canvas>
+
+  componentDidUpdate() {
+    if (this.props.shouldRender) {
+      this.props.triggerRender();
+    }
+  }
+
+  render() {
+    let titleElement = null;
+    if (this.props.title !== '') {
+      titleElement = <span className="card-title">{this.props.title}</span>;
+    }
+    return (
+      <div className="card orange darken-4 white-text">
+        <div className="card-content">
+          {titleElement}
+          <br />
+          <canvas
+            id={this.props.id}
+            width={this.props.width}
+            height={this.props.height}
+            onClick={e => this.props.onClick(e, this.props.onClickArgs) }
+          >
+          </canvas>
+        </div>
       </div>
-    </div>
-  );
-};
+    );
+  }
+}
 
 Canvas.propTypes = {
   title: PropTypes.string.isRequired,
@@ -31,6 +43,8 @@ Canvas.propTypes = {
   height: PropTypes.number.isRequired,
   onClick: PropTypes.func.isRequired,
   onClickArgs: PropTypes.object.isRequired,
+  shouldRender: PropTypes.bool.isRequired,
+  triggerRender: PropTypes.func.isRequired,
 };
 
 export default Canvas;

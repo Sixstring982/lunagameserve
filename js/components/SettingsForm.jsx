@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import Checkbox from './Checkbox.jsx';
 import Select from './Select.jsx';
 import Slider from './Slider.jsx';
 import Button from './Button.jsx';
@@ -8,9 +9,11 @@ const SettingsForm = ({
   sliders,
   selects,
   buttons,
+  checkboxes,
   onSliderChange,
   onSelectChange,
   onButtonClick,
+  onCheckboxChange,
   onClickParams,
 }) => (
     <div className="card blue-grey darken-1">
@@ -19,14 +22,17 @@ const SettingsForm = ({
         <div className="form">
           {sliders.map((s, i) =>
             <Slider key={s.key} {...s} onChange={(value) => onSliderChange(i, value) } />
-          )}
+          ) }
         </div>
         {selects.map(s =>
           <Select key={s.key} {...s} onChange={onSelectChange} />
-        )}
+        ) }
+        {checkboxes.map(c =>
+          <Checkbox key={c.key} {...c} onChange={() => onCheckboxChange(c.key) } />
+        ) }
         {buttons.map(b =>
-          <Button key={b.key} {...b} onClick={() => onButtonClick(b.key, onClickParams)} />
-        )}
+          <Button key={b.key} {...b} onClick={() => onButtonClick(b.key, onClickParams) } />
+        ) }
       </div>
     </div>
   );
@@ -54,9 +60,15 @@ SettingsForm.propTypes = {
     key: PropTypes.number.isRequired,
     text: PropTypes.string.isRequired,
   }).isRequired).isRequired,
+  checkboxes: PropTypes.arrayOf(PropTypes.shape({
+    key: PropTypes.number.isRequired,
+    label: PropTypes.string.isRequired,
+    checked: PropTypes.bool.isRequired,
+  }).isRequired).isRequired,
   onSliderChange: PropTypes.func.isRequired,
   onSelectChange: PropTypes.func.isRequired,
   onButtonClick: PropTypes.func.isRequired,
+  onCheckboxChange: PropTypes.func.isRequired,
   onClickParams: PropTypes.object.isRequired,
 };
 

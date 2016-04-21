@@ -5,7 +5,8 @@ module.exports = {
   entry: {
     app: './js/main.js',
     buddhabrot: './js/buddhabrot.js',
-    mandelbrot: './js/mandelbrot.jsx'
+    mandelbrot: './js/mandelbrot.jsx',
+    elementary: './js/elementary.jsx'
   },
   output: {
     path: path.resolve(__dirname, 'build'),

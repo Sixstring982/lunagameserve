@@ -46,6 +46,7 @@ const mapStateToProps = (state) => ({
   sliders: buildSliders(state),
   selects: [],
   buttons: buildButtons(state),
+  checkboxes: [],
   onClickParams: {
     cfunc: (t) => state.palette.cfunc(t, state.palette.components),
   },
@@ -71,6 +72,7 @@ const mapDispatchToProps = (dispatch) => ({
       default: break;
     }
   },
+  onCheckboxChange: () => { },
 });
 
 const MandelbrotSettings = connect(

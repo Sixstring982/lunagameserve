@@ -11,6 +11,7 @@ const mapStateToProps = (state) => {
     id: state.mandelbrot.canvasId,
     width,
     height,
+    shouldRender: false,
     onClickArgs: {
       window: state.mandelbrot.window,
       resolution: getResolution(state.resolution),
@@ -31,6 +32,7 @@ const mapDispatchToProps = (dispatch) => ({
     const center = mapToWindow(canvasCoords);
     dispatch(zoomWindow(center, state.cfunc));
   },
+  triggerRender: () => { },
 });
 
 const MandelbrotCanvas = connect(
