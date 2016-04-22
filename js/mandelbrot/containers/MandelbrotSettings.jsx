@@ -1,8 +1,8 @@
 import { setResolution, renderMandelbrot,
-         setIterations, resetWindow } from '../actions/MandelbrotActions.js';
-import { getResolution, getResolutionCount } from '../resolution';
+         setIterations, resetWindow } from '../actions';
+import Resolution from '../models/core/Resolution';
 import { connect } from 'react-redux';
-import SettingsForm from '../components/SettingsForm.jsx';
+import SettingsForm from '../components/core/SettingsForm.jsx';
 
 const RESOLUTION_SLIDER_KEY = 0;
 const ITERATIONS_SLIDER_KEY = 1;
@@ -11,13 +11,13 @@ const GENERATE_BUTTON_KEY = 0;
 const RESET_BUTTON_KEY = 1;
 
 const buildSliders = (state) => {
-  const { width, height } = getResolution(state.resolution);
+  const { width, height } = Resolution.get(state.resolution);
   return [
     {
       key: RESOLUTION_SLIDER_KEY,
       name: `Canvas Resolution (${width}x${height})`,
       min: 0,
-      max: getResolutionCount() - 1,
+      max: Resolution.count() - 1,
       step: 1,
       value: state.resolution,
     }, {

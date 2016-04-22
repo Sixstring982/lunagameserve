@@ -1,12 +1,12 @@
 import React from 'react';
+import Reducers from './reducers';
 import { render } from 'react-dom';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
-import MandelbrotReducers from './reducers/mandelbrot/';
-import { initialize } from './actions/MandelbrotActions';
+import { initialize } from './actions';
 import MandelbrotApp from './components/MandelbrotApp.jsx';
 
-let store = createStore(MandelbrotReducers);
+let store = createStore(Reducers);
 
 render(
   <Provider store={store}>

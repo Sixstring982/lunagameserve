@@ -1,8 +1,8 @@
 import { setRule, setXCells,
          setYCells, setCellSize,
-         toggleRandomInit, toggleWrap } from '../actions/ElementaryActions';
+         toggleRandomInit, toggleWrap } from '../actions';
 import { connect } from 'react-redux';
-import SettingsForm from '../components/SettingsForm.jsx';
+import SettingsForm from '../components/core/SettingsForm.jsx';
 
 const RULE_SLIDER_KEY = 0;
 const X_CELLS_SLIDER_KEY = 1;

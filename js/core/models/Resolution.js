@@ -6,6 +6,12 @@ const RESOLUTIONS = [
   { width: 1920, height: 1080 },
 ];
 
-export const getResolution = (idx) => RESOLUTIONS[idx];
+export default class Resolution {
+  static get(idx) {
+    return RESOLUTIONS[idx];
+  }
 
-export const getResolutionCount = () => RESOLUTIONS.length;
+  static count() {
+    return RESOLUTIONS.length;
+  }
+}

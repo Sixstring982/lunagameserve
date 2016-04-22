@@ -1,16 +1,12 @@
 import React from 'react';
+import Reducers from './reducers';
 import { render } from 'react-dom';
+import { createStore } from 'redux';
 import { Provider } from 'react-redux';
-import ElementaryReducers from './reducers/elementary';
+import { initialize } from './actions';
 import ElementaryApp from './components/ElementaryApp.jsx';
-import { initialize } from './actions/ElementaryActions';
-import { createStore, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
 
-const store = createStore(
-  ElementaryReducers,
-  applyMiddleware(thunk)
-);
+const store = createStore(Reducers);
 
 render(
   <Provider store={store}>

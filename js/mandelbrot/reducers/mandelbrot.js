@@ -1,5 +1,5 @@
-import Window from '../../models/Window';
-import Complex from '../../models/Complex';
+import Window from '../models/core/Window';
+import Complex from '../models/core/Complex';
 
 const INITIAL_WINDOW = new Window(-2, -1, 3, 2);
 

@@ -1,5 +1,5 @@
-import Elementary from '../../models/Elementary';
-import Palette from '../../models/Palette';
+import Elementary from '../models/Elementary';
+import Palette from '../models/core/Palette';
 
 const CANVAS_ID = 'elementaryCanvas';
 const PALETTE_ID = 'elementaryPalette';

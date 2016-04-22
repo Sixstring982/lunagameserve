@@ -1,6 +1,6 @@
-import { setChannel, setComponent } from '../actions/ElementaryActions';
+import { setChannel, setComponent } from '../actions/';
 import { connect } from 'react-redux';
-import Palette from '../components/Palette.jsx';
+import Palette from '../components/core/Palette.jsx';
 
 const mapStateToProps = (state) => ({
   title: 'Palette',

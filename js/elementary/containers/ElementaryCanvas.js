@@ -1,6 +1,6 @@
-import { renderToCanvas } from '../actions/ElementaryActions';
+import { renderToCanvas } from '../actions';
 import { connect } from 'react-redux';
-import Canvas from '../components/Canvas.jsx';
+import Canvas from '../components/core/Canvas.jsx';
 
 const mapStateToProps = (state) => ({
   title: '',

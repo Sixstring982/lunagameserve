@@ -1,11 +1,11 @@
-import { zoomWindow } from '../actions/MandelbrotActions.js';
-import { getResolution } from '../resolution';
+import { zoomWindow } from '../actions';
+import Resolution from '../models/core/Resolution';
 import { connect } from 'react-redux';
 import { convertEventCoords } from 'canvas-utils';
-import Canvas from '../components/Canvas.jsx';
+import Canvas from '../components/core/Canvas.jsx';
 
 const mapStateToProps = (state) => {
-  const { width, height } = getResolution(state.resolution);
+  const { width, height } = Resolution.get(state.resolution);
   return {
     title: 'Canvas',
     id: state.mandelbrot.canvasId,
@@ -14,7 +14,7 @@ const mapStateToProps = (state) => {
     shouldRender: false,
     onClickArgs: {
       window: state.mandelbrot.window,
-      resolution: getResolution(state.resolution),
+      resolution: Resolution.get(state.resolution),
       cfunc: t => state.palette.cfunc(t, state.palette.components),
     },
   };

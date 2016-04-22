@@ -1,5 +1,5 @@
-import Palette from '../components/Palette.jsx';
-import { setPaletteChannel, setPaletteComponent } from '../actions/MandelbrotActions';
+import Palette from '../components/core/Palette.jsx';
+import { setPaletteChannel, setPaletteComponent } from '../actions';
 import { connect } from 'react-redux';
 
 const mapStateToProps = (state) => ({
