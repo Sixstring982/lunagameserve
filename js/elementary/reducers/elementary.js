@@ -2,7 +2,8 @@ import Elementary from '../models/Elementary';
 import Palette from '../models/core/Palette';
 
 const CANVAS_ID = 'elementaryCanvas';
-const PALETTE_ID = 'elementaryPalette';
+const PALETTE_COLOR_ID = 'elementaryPaletteColor';
+const PALETTE_WAVE_ID = 'elementaryPaletteWave';
 const INITIAL_RULE = 30;
 const INITIAL_X_CELLS = 32;
 const INITIAL_Y_CELLS = 32;
@@ -15,7 +16,8 @@ const INITIAL_PALETTE = new Palette([[0.5, 0.5, 1.0, 0.0],
   [0.5, 0.5, 0.4, 0.2]], 0);
 const INITIAL_STATE = {
   canvasId: CANVAS_ID,
-  paletteId: PALETTE_ID,
+  colorPaletteId: PALETTE_COLOR_ID,
+  wavePaletteId: PALETTE_WAVE_ID,
   xCells: INITIAL_X_CELLS,
   yCells: INITIAL_Y_CELLS,
   cellSize: INITIAL_CELL_SIZE,
@@ -58,7 +60,7 @@ const render = (state) => {
 };
 
 const renderPalette = (state) => {
-  const canvas = document.getElementById(state.paletteId);
+  const canvas = document.getElementById(state.colorPaletteId);
   const g = canvas.getContext('2d');
   const { width, height } = canvas;
   const img = g.createImageData(width, height);
@@ -86,6 +88,7 @@ const setAndRender = (state) => {
 const setAndRenderWithPalette = (state) => {
   render(state);
   renderPalette(state);
+  state.palette.renderWaves(document.getElementById(state.wavePaletteId));
   return state;
 };
 

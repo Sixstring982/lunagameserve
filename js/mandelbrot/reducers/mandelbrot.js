@@ -1,12 +1,15 @@
 import Window from '../models/core/Window';
 import Complex from '../models/core/Complex';
+import Palette from '../models/core/Palette';
 
 const INITIAL_WINDOW = new Window(-2, -1, 3, 2);
 
 const INITIAL_STATE = {
   canvasId: 'mandelbrotCanvas',
+  paletteColorId: 'paletteColorCanvas',
+  paletteWaveId: 'paleteWaveCanvas',
   window: INITIAL_WINDOW,
-  iterations: 2,
+  iterations: 5,
 };
 
 const renderState = (state, cfunc) => {

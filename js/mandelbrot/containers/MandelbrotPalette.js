@@ -4,9 +4,10 @@ import { connect } from 'react-redux';
 
 const mapStateToProps = (state) => ({
   title: 'Palette',
-  canvasId: state.palette.canvasId,
-  selectedComponent: state.palette.channel,
-  components: state.palette.components[state.palette.channel],
+  canvasId: state.mandelbrot.canvasId,
+  palette: state.mandelbrot.palette,
+  colorCanvasId: state.mandelbrot.paletteColorId,
+  waveCanvasId: state.mandelbrot.paletteWaveId,
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -1,5 +1,6 @@
-
+import Math2 from './Math2';
 import Color from './Color';
+import Image2D from './Image2D';
 
 export default class Palette {
   constructor(components, selectedChannel) {
@@ -44,5 +45,28 @@ export default class Palette {
       color: new Color(red, green, blue),
       inverse: new Color(255 - red, 255 - green, 255 - blue),
     };
+  }
+
+  renderWaves(canvas) {
+    const img = new Image2D(canvas);
+    const { width, height } = canvas;
+    img.clear(0, 0, 0);
+
+    for (let y = 0; y < height; y++) {
+      const t = y / height;
+      const axis = Math.floor(width / 2);
+      const color = new Color(
+        Math2.clamp(((this.computeChannel(0, t) + 1) / 2), 0, 1),
+        Math2.clamp(((this.computeChannel(1, t) + 1) / 2), 0, 1),
+        Math2.clamp(((this.computeChannel(2, t) + 1) / 2), 0, 1)
+      );
+      color.scale(width - 1);
+      img.setPixel(axis, y, 0x40, 0x40, 0x40);
+      img.setPixel(Math.floor(color.r), y, 0xff, 0, 0);
+      img.setPixel(Math.floor(color.g), y, 0, 0xff, 0);
+      img.setPixel(Math.floor(color.b), y, 0, 0, 0xff);
+    }
+
+    img.flip();
   }
 }

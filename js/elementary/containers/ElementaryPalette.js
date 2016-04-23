@@ -4,9 +4,9 @@ import Palette from '../components/core/Palette.jsx';
 
 const mapStateToProps = (state) => ({
   title: 'Palette',
-  canvasId: state.elementary.paletteId,
-  selectedComponent: state.elementary.palette.getSelectedChannel(),
-  components: state.elementary.palette.getSelectedComponent(),
+  colorCanvasId: state.elementary.colorPaletteId,
+  waveCanvasId: state.elementary.wavePaletteId,
+  palette: state.elementary.palette,
 });
 
 const mapDispatchToProps = (dispatch) => ({

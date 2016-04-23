@@ -1,12 +1,13 @@
 import React, { PropTypes } from 'react';
+import Palette from '../models/Palette';
 import Fab from './Fab.jsx';
 import Slider from './Slider.jsx';
 
-const Palette = ({
+const PaletteComponent = ({
   title,
-  canvasId,
-  selectedComponent,
-  components,
+  colorCanvasId,
+  waveCanvasId,
+  palette,
   onChannelChange,
   onComponentChange,
 }) => {
@@ -28,7 +29,7 @@ const Palette = ({
           </div>
           <div className="col s9">
             <Fab
-              mainColor={COLORS[selectedComponent]}
+              mainColor={COLORS[palette.getSelectedChannel()]}
               mainIcon="settings_input_component"
               subButtons={[
                 {
@@ -51,7 +52,7 @@ const Palette = ({
         </div>
         <div className="row">
           <div className="col s8">
-            {components.map((c, i) =>
+            {palette.getSelectedComponent().map((c, i) =>
               <Slider
                 key={i}
                 name={`${NAMES[i]} (${c})`}
@@ -59,12 +60,15 @@ const Palette = ({
                 max={MAXIMUMS[i]}
                 step={0.01}
                 value={c}
-                onChange={v => onComponentChange(selectedComponent, i, v) }
+                onChange={v => onComponentChange(palette.getSelectedChannel(), i, v) }
               />
             ) }
           </div>
-          <div className="col s4">
-            <canvas id={canvasId} width="35" height="200"></canvas>
+          <div className="col s2">
+            <canvas id={waveCanvasId} width={35} height={200}></canvas>
+          </div>
+          <div className="col s2">
+            <canvas id={colorCanvasId} width={35} height={200}></canvas>
           </div>
         </div>
       </div>
@@ -72,13 +76,13 @@ const Palette = ({
   );
 };
 
-Palette.propTypes = {
+PaletteComponent.propTypes = {
   title: PropTypes.string.isRequired,
-  canvasId: PropTypes.string.isRequired,
-  selectedComponent: PropTypes.number.isRequired,
-  components: PropTypes.arrayOf(PropTypes.number.isRequired).isRequired,
+  colorCanvasId: PropTypes.string.isRequired,
+  waveCanvasId: PropTypes.string.isRequired,
+  palette: PropTypes.instanceOf(Palette),
   onChannelChange: PropTypes.func.isRequired,
   onComponentChange: PropTypes.func.isRequired,
 };
 
-export default Palette;
+export default PaletteComponent;
