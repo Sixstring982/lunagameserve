@@ -4,6 +4,12 @@ export default class Complex {
     this.i = Number(i);
   }
 
+  clone() {
+    return new Complex(
+      this.r, this.i
+    );
+  }
+
   add(other) {
     this.r += other.r;
     this.i += other.i;

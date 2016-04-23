@@ -59,27 +59,6 @@ const render = (state) => {
   g.putImageData(img, 0, 0);
 };
 
-const renderPalette = (state) => {
-  const canvas = document.getElementById(state.colorPaletteId);
-  const g = canvas.getContext('2d');
-  const { width, height } = canvas;
-  const img = g.createImageData(width, height);
-
-  for (let y = 0; y < height; y++) {
-    const t = y / height;
-    const color = state.palette.computeColor(t);
-    for (let x = 0; x < width; x++) {
-      const idx = (x + y * width) * 4;
-      img.data[idx] = color.getR();
-      img.data[idx + 1] = color.getG();
-      img.data[idx + 2] = color.getB();
-      img.data[idx + 3] = 255;
-    }
-  }
-
-  g.putImageData(img, 0, 0);
-};
-
 const setAndRender = (state) => {
   render(state);
   return state;
@@ -87,8 +66,8 @@ const setAndRender = (state) => {
 
 const setAndRenderWithPalette = (state) => {
   render(state);
-  renderPalette(state);
-  state.palette.renderWaves(document.getElementById(state.wavePaletteId));
+  state.palette.renderPalette(state.colorPaletteId);
+  state.palette.renderWaves(state.wavePaletteId);
   return state;
 };
 

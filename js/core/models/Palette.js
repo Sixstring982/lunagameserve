@@ -47,7 +47,29 @@ export default class Palette {
     };
   }
 
-  renderWaves(canvas) {
+  canvasFromId(id) {
+    return document.getElementById(id);
+  }
+
+  renderPalette(id) {
+    const canvas = this.canvasFromId(id);
+    const img = new Image2D(canvas);
+    const { width, height } = canvas;
+    img.clear(0, 0, 0);
+
+    for (let y = 0; y < height; y++) {
+      const t = y / height;
+      const color = this.computeColor(t);
+      for (let x = 0; x < width; x++) {
+        img.setPixel(x, y, color.getR(), color.getG(), color.getB());
+      }
+    }
+
+    img.flip();
+  }
+
+  renderWaves(id) {
+    const canvas = this.canvasFromId(id);
     const img = new Image2D(canvas);
     const { width, height } = canvas;
     img.clear(0, 0, 0);

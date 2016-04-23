@@ -1,4 +1,5 @@
 import Window from '../models/core/Window';
+import Image2D from '../models/core/Image2D';
 import Complex from '../models/core/Complex';
 import Palette from '../models/core/Palette';
 
@@ -8,91 +9,122 @@ const INITIAL_STATE = {
   canvasId: 'mandelbrotCanvas',
   paletteColorId: 'paletteColorCanvas',
   paletteWaveId: 'paleteWaveCanvas',
+  palette: new Palette(
+    [[0.5, 0.5, 1.0, 0.0],
+      [0.5, 0.5, 0.7, 0.15],
+      [0.5, 0.5, 0.4, 0.2]], 0),
   window: INITIAL_WINDOW,
   iterations: 5,
 };
 
-const renderState = (state, cfunc) => {
+const renderState = (state) => {
   const canvas = document.getElementById(state.canvasId);
-  const g = canvas.getContext('2d');
+  const img = new Image2D(canvas);
+  const window = state.window;
   const { width, height } = canvas;
-  const img = g.createImageData(width, height);
 
-  const dx = state.window.width / width;
-  const dy = state.window.height / height;
-
+  const dx = window.width / width;
+  const dy = window.height / height;
   const iters = Math.pow(2, state.iterations);
-  const COLOR_LOOP = 256;
-
   for (let x = 0; x < width; x++) {
     for (let y = 0; y < height; y++) {
       const c = new Complex(
-        x * dx + state.window.x,
-        y * dy + state.window.y
+        window.x + x * dx,
+        window.y + y * dy
       );
-
-      const z = new Complex(
-        x * dx + state.window.x,
-        y * dy + state.window.y
-      );
+      const z = c.clone();
 
       let i;
       for (i = 0; i < iters; i++) {
         if (z.modulusSquared > 4) {
           break;
-        } else {
-          z.square();
-          z.add(c);
         }
+        z.square();
+        z.add(c);
       }
-      let color;
       if (i === 0 || i === iters) {
-        color = { r: 0, g: 0, b: 0 };
+        img.setPixel(x, y, 0, 0, 0);
       } else {
-        color = cfunc((i % COLOR_LOOP) / COLOR_LOOP);
+        const t = i / iters;
+        const color = state.palette.computeColor(t);
+        img.setPixel(x, y, color.r, color.g, color.b);
       }
-
-      const idx = (x + y * width) * 4;
-      img.data[idx] = color.r;
-      img.data[idx + 1] = color.g;
-      img.data[idx + 2] = color.b;
-      img.data[idx + 3] = 255;
     }
   }
 
-  g.putImageData(img, 0, 0);
+  img.flip();
 };
 
-const window = (state = INITIAL_STATE, action) => {
+const renderReturn = (state) => {
+  renderState(state);
+  return state;
+};
+
+const renderWithPaletteReturn = (state) => {
+  renderState(state);
+  state.palette.renderPalette(state.paletteColorId);
+  state.palette.renderWaves(state.paletteWaveId);
+  return state;
+};
+
+const makeNewStateWithComponent = (state, action) => {
+  const palette = state.palette;
+  const oldC = palette.getComponents();
+  const newC = [];
+  for (let i = 0; i < oldC.length; i++) {
+    if (i !== palette.getSelectedChannel()) {
+      newC.push(oldC[i]);
+    } else {
+      const channel = [];
+      for (let j = 0; j < oldC[i].length; j++) {
+        if (j === action.component) {
+          channel.push(action.value);
+        } else {
+          channel.push(oldC[i][j]);
+        }
+      }
+      newC.push(channel);
+    }
+  }
+  return Object.assign({}, state, {
+    palette: new Palette(newC, palette.getSelectedChannel()),
+  });
+};
+
+const mandelbrot = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case 'ZOOM_WINDOW': {
-      const newState = Object.assign({}, state, {
+    case 'ZOOM_WINDOW':
+      return renderReturn(Object.assign({}, state, {
         window: state.window.zoom({
           x: action.x,
           y: action.y,
         }),
-      });
-      renderState(newState, action.cfunc);
-      return newState;
-    }
-    case 'RESET_WINDOW': {
-      const newState = Object.assign({}, state, {
+      }));
+    case 'RESET_WINDOW':
+      return renderReturn(Object.assign({}, state, {
         window: INITIAL_WINDOW,
-      });
-      renderState(newState, action.cfunc);
-      return newState;
-    }
+      }));
+    case 'SET_PALETTE_CHANNEL':
+      return renderWithPaletteReturn(Object.assign({}, state, {
+        palette: new Palette(state.palette.getComponents(), action.channel),
+      }));
+    case 'SET_PALETTE_COMPONENT':
+      return renderWithPaletteReturn(
+        makeNewStateWithComponent(state, action)
+      );
     case 'RENDER_MANDELBROT': {
-      renderState(state, action.cfunc);
+      renderState(state);
       return state;
     }
     case 'SET_ITERATIONS':
       return Object.assign({}, state, {
         iterations: action.iterations,
       });
+    case 'INITIALIZE':
+      return renderWithPaletteReturn(state);
     default:
       return state;
   }
 };
 
-export default window;
+export default mandelbrot;
