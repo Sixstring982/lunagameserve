@@ -1,5 +1,6 @@
 import Elementary from '../models/Elementary';
 import Palette from '../models/core/Palette';
+import Image2D from '../models/core/Image2D';
 
 const CANVAS_ID = 'elementaryCanvas';
 const PALETTE_COLOR_ID = 'elementaryPaletteColor';
@@ -30,9 +31,7 @@ const INITIAL_STATE = {
 
 const render = (state) => {
   const canvas = document.getElementById(state.canvasId);
-  const g = canvas.getContext('2d');
-  const { width, height } = canvas;
-  const img = g.createImageData(width, height);
+  const img = new Image2D(canvas);
 
   const elem = new Elementary(
     state.rule, state.xCells, state.yCells, state.randomInit, state.wrap
@@ -40,23 +39,25 @@ const render = (state) => {
 
   elem.compute();
 
-  for (let y = 0; y < height; y++) {
-    const t = y / height;
+  for (let y = 0; y < state.yCells; y++) {
+    const t = y / state.yCells;
     const { color, inverse } = state.palette.computeColorAndInverse(t);
     inverse.scale(0.25);
-    for (let x = 0; x < width; x++) {
-      const eX = Math.floor(x / state.cellSize);
-      const eY = Math.floor(y / state.cellSize);
-      const on = elem.getBin(eX, eY);
-      const idx = (x + y * width) * 4;
-      img.data[idx] = on ? color.r : inverse.r;
-      img.data[idx + 1] = on ? color.g : inverse.g;
-      img.data[idx + 2] = on ? color.b : inverse.b;
-      img.data[idx + 3] = 255;
+    for (let x = 0; x < state.xCells; x++) {
+      const on = elem.getBin(x, y);
+      const c = on ? color : inverse;
+      for (let xx = 0; xx < state.cellSize; xx++) {
+        for (let yy = 0; yy < state.cellSize; yy++) {
+          img.setPixel(
+            x * state.cellSize + xx, y * state.cellSize + yy,
+            c.r, c.g, c.b
+          );
+        }
+      }
     }
   }
 
-  g.putImageData(img, 0, 0);
+  img.flip();
 };
 
 const setAndRender = (state) => {
