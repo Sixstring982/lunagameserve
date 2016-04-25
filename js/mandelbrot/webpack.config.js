@@ -26,8 +26,15 @@ module.exports = {
         query: {
           presets: ['react', 'es2015']
         }
+      },
+      {
+        test: /\.glsl$/,
+        loader: 'shader'
       }
     ]
+  },
+  glsl: {
+    chunkPath: __dirname + '/glsl/chunks'
   },
   stats: {
     colors: true

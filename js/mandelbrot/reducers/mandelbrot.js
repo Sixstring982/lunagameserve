@@ -1,7 +1,8 @@
 import Window from '../models/core/Window';
-import Image2D from '../models/core/Image2D';
-import Complex from '../models/core/Complex';
 import Palette from '../models/core/Palette';
+import VertexShader from '../shaders/vertex.glsl';
+import FragmentShader from '../shaders/fragment.glsl';
+import ShaderProgram from '../models/ShaderProgram';
 
 const INITIAL_WINDOW = new Window(-2, -1, 3, 2);
 
@@ -17,51 +18,85 @@ const INITIAL_STATE = {
   iterations: 5,
 };
 
-const renderState = (state) => {
+const renderGL = (state) => {
   const canvas = document.getElementById(state.canvasId);
-  const img = new Image2D(canvas);
-  const window = state.window;
+  const gl = canvas.getContext('webgl');
+  if (gl === null) {
+    return;
+  }
   const { width, height } = canvas;
 
-  const dx = window.width / width;
-  const dy = window.height / height;
+  const program = new ShaderProgram();
+  program.create(gl, VertexShader, FragmentShader);
+
+  const positionBuffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+  const verts = [
+    1.0, 1.0,
+    -1.0, 1.0,
+    -1.0, -1.0,
+    1.0, -1.0,
+    1.0, 1.0,
+  ];
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(verts), gl.STATIC_DRAW);
+  positionBuffer.itemSize = 2;
+  positionBuffer.numItems = verts.length / 2;
+
+  gl.clearColor(0.0, 0.0, 0.0, 1.0);
+  gl.viewport(0, 0, width, height);
+  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
   const iters = Math.pow(2, state.iterations);
-  for (let x = 0; x < width; x++) {
-    for (let y = 0; y < height; y++) {
-      const c = new Complex(
-        window.x + x * dx,
-        window.y + y * dy
-      );
-      const z = c.clone();
+  program.setUniform1i('iterations', iters);
 
-      let i;
-      for (i = 0; i < iters; i++) {
-        if (z.modulusSquared > 4) {
-          break;
-        }
-        z.square();
-        z.add(c);
-      }
-      if (i === 0 || i === iters) {
-        img.setPixel(x, y, 0, 0, 0);
-      } else {
-        const t = i / iters;
-        const color = state.palette.computeColor(t);
-        img.setPixel(x, y, color.r, color.g, color.b);
-      }
-    }
-  }
+  program.setUniform2f('iResolution', {
+    x: width,
+    y: height,
+  });
 
-  img.flip();
+  program.setUniform4f('window', {
+    x: state.window.x,
+    y: state.window.y,
+    z: state.window.width,
+    w: state.window.height,
+  });
+
+  program.setUniform4f('redChannel', {
+    x: state.palette.getChannelComponent(0, 0),
+    y: state.palette.getChannelComponent(0, 1),
+    z: state.palette.getChannelComponent(0, 2),
+    w: state.palette.getChannelComponent(0, 3),
+  });
+
+  program.setUniform4f('greenChannel', {
+    x: state.palette.getChannelComponent(1, 0),
+    y: state.palette.getChannelComponent(1, 1),
+    z: state.palette.getChannelComponent(1, 2),
+    w: state.palette.getChannelComponent(1, 3),
+  });
+
+  program.setUniform4f('blueChannel', {
+    x: state.palette.getChannelComponent(2, 0),
+    y: state.palette.getChannelComponent(2, 1),
+    z: state.palette.getChannelComponent(2, 2),
+    w: state.palette.getChannelComponent(2, 3),
+  });
+
+  program.vertexAttribPointer('aVertexPosition', positionBuffer);
+
+  gl.drawArrays(gl.TRIANGLE_STRIP, 0, positionBuffer.numItems);
+
+  gl.deleteBuffer(positionBuffer);
+  program.destroy();
 };
 
 const renderReturn = (state) => {
-  renderState(state);
+  renderGL(state);
   return state;
 };
 
 const renderWithPaletteReturn = (state) => {
-  renderState(state);
+  renderGL(state);
   state.palette.renderPalette(state.paletteColorId);
   state.palette.renderWaves(state.paletteWaveId);
   return state;
@@ -113,13 +148,12 @@ const mandelbrot = (state = INITIAL_STATE, action) => {
         makeNewStateWithComponent(state, action)
       );
     case 'RENDER_MANDELBROT': {
-      renderState(state);
-      return state;
+      return renderReturn(state);
     }
     case 'SET_ITERATIONS':
-      return Object.assign({}, state, {
+      return renderReturn(Object.assign({}, state, {
         iterations: action.iterations,
-      });
+      }));
     case 'INITIALIZE':
       return renderWithPaletteReturn(state);
     default:

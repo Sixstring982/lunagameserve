@@ -31,6 +31,7 @@
     "redux": "~3.3.1",
     "redux-multi": "^0.1.12",
     "redux-thunk": "^2.0.1",
-    "webpack": "~1.12.14"
+    "webpack": "~1.12.14",
+    "shader-loader": "~1.1.4"
   }
 }

@@ -16,6 +16,10 @@ export default class Palette {
     return this.components[this.selectedChannel];
   }
 
+  getChannelComponent(channel, component) {
+    return this.components[channel][component];
+  }
+
   getComponents() {
     return this.components;
   }

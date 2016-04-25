@@ -24,7 +24,7 @@ const buildSliders = (state) => {
       key: ITERATIONS_SLIDER_KEY,
       name: `Iterations (${Math.pow(2, state.mandelbrot.iterations)})`,
       min: 1,
-      max: 32,
+      max: 13,
       step: 1,
       value: state.mandelbrot.iterations,
     },
