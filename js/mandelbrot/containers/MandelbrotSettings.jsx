@@ -1,5 +1,6 @@
 import { setResolution, renderMandelbrot,
-         setIterations, resetWindow } from '../actions';
+         setIterations, resetWindow,
+         toggleGaussianBlur } from '../actions';
 import Resolution from '../models/core/Resolution';
 import { connect } from 'react-redux';
 import SettingsForm from '../components/core/SettingsForm.jsx';
@@ -41,12 +42,21 @@ const buildButtons = (_state) => [
   },
 ];
 
+const GAUSSIAN_BLUR_CHECKBOX_KEY = 0;
+const buildCheckboxes = (state) => [
+  {
+    key: GAUSSIAN_BLUR_CHECKBOX_KEY,
+    label: 'Gaussian Blur',
+    checked: state.mandelbrot.gaussianBlur,
+  },
+];
+
 const mapStateToProps = (state) => ({
   title: 'Generation Settings',
   sliders: buildSliders(state),
   selects: [],
   buttons: buildButtons(state),
-  checkboxes: [],
+  checkboxes: buildCheckboxes(state),
   onClickParams: {
     cfunc: (t) => state.palette.cfunc(t, state.palette.components),
   },
@@ -72,7 +82,12 @@ const mapDispatchToProps = (dispatch) => ({
       default: break;
     }
   },
-  onCheckboxChange: () => { },
+  onCheckboxChange: (id) => {
+    switch (id) {
+      case GAUSSIAN_BLUR_CHECKBOX_KEY: dispatch(toggleGaussianBlur()); break;
+      default: break;
+    }
+  },
 });
 
 const MandelbrotSettings = connect(

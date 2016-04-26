@@ -15,27 +15,64 @@ const SettingsForm = ({
   onButtonClick,
   onCheckboxChange,
   onClickParams,
-}) => (
-    <div className="card blue-grey darken-1">
-      <div className="card-content white-text">
-        <span className="card-title">{title}</span>
+}) => {
+  let sliderElement = null;
+  if (sliders.length > 0) {
+    sliderElement = (
+      <div className="card-action">
         <div className="form">
           {sliders.map((s, i) =>
             <Slider key={s.key} {...s} onChange={(value) => onSliderChange(i, value) } />
           ) }
         </div>
+      </div>
+    );
+  }
+
+  let selectsElement = null;
+  if (selects.length > 0) {
+    selectsElement = (
+      <div className="card-action">
         {selects.map(s =>
           <Select key={s.key} {...s} onChange={onSelectChange} />
         ) }
+      </div>
+    );
+  }
+
+  let checkboxElement = null;
+  if (checkboxes.length > 0) {
+    checkboxElement = (
+      <div className="card-action">
         {checkboxes.map(c =>
           <Checkbox key={c.key} {...c} onChange={() => onCheckboxChange(c.key) } />
         ) }
+      </div>
+    );
+  }
+
+  let buttonElement = null;
+  if (buttons.length > 0) {
+    buttonElement = (
+      <div className="card-action">
         {buttons.map(b =>
           <Button key={b.key} {...b} onClick={() => onButtonClick(b.key, onClickParams) } />
         ) }
       </div>
+    );
+  }
+  return (
+    <div className="card blue-grey darken-1">
+      <div className="card-content white-text">
+        <span className="card-title">{title}</span>
+        {sliderElement}
+        {selectsElement}
+        {checkboxElement}
+        {buttonElement}
+      </div>
     </div>
   );
+};
 
 SettingsForm.propTypes = {
   title: PropTypes.string.isRequired,

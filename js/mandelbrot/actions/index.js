@@ -56,3 +56,7 @@ export const setPaletteComponent = (channel, component, value) => ({
 export const initialize = () => ({
   type: 'INITIALIZE',
 });
+
+export const toggleGaussianBlur = () => ({
+  type: 'TOGGLE_GAUSSIAN_BLUR',
+});

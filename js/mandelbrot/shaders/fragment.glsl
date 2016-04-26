@@ -11,6 +11,8 @@ uniform vec4 redChannel;
 uniform vec4 greenChannel;
 uniform vec4 blueChannel;
 
+uniform bool gaussianBlur;
+
 vec3 getColor(float tVal) {
     vec3 a = vec3(redChannel.x, greenChannel.x, blueChannel.x);
     vec3 b = vec3(redChannel.y, greenChannel.y, blueChannel.y);
@@ -25,7 +27,7 @@ float mandelbrot(vec2 c) {
     vec2 z = c;
     int iters;
     bool done = false;
-    for (int i = 0; i < 10000; i++) {
+    for (int i = 0; i < 8192; i++) {
         if (i > iterations) {
             break;
         }
@@ -44,8 +46,20 @@ float mandelbrot(vec2 c) {
 
 void main(void) {
     vec2 uv = gl_FragCoord.xy / iResolution;
+    vec3 d = vec3(window.zw / iResolution, 0.0);
     uv.y = 1.0 - uv.y;
     vec2 c = uv.xy * window.zw + window.xy;
-    float t = mandelbrot(c);
+    float center = mandelbrot(c);
+    float t;
+    if (!gaussianBlur) {
+        t = center;
+    } else {
+        t =
+            center * 0.5 +
+            mandelbrot(c + d.xz) * 0.125 +
+            mandelbrot(c + d.zy) * 0.125 +
+            mandelbrot(c - d.xz) * 0.125 +
+            mandelbrot(c - d.zy) * 0.125;
+    }
     gl_FragColor = vec4(getColor(t), 1.0);
 }
