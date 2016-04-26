@@ -1,6 +1,7 @@
 import { setResolution, renderMandelbrot,
          setIterations, resetWindow,
-         toggleGaussianBlur } from '../actions';
+         toggleGaussianBlur, toggleOriginalLayer,
+         togglePointTrapLayer } from '../actions';
 import Resolution from '../models/core/Resolution';
 import { connect } from 'react-redux';
 import SettingsForm from '../components/core/SettingsForm.jsx';
@@ -43,11 +44,21 @@ const buildButtons = (_state) => [
 ];
 
 const GAUSSIAN_BLUR_CHECKBOX_KEY = 0;
+const ORIGINAL_LAYER_CHECKBOX_KEY = 1;
+const POINT_TRAP_LAYER_CHECKBOX_KEY = 2;
 const buildCheckboxes = (state) => [
   {
     key: GAUSSIAN_BLUR_CHECKBOX_KEY,
     label: 'Gaussian Blur',
     checked: state.mandelbrot.gaussianBlur,
+  }, {
+    key: ORIGINAL_LAYER_CHECKBOX_KEY,
+    label: 'Original Mandelbrot',
+    checked: state.mandelbrot.originalLayer,
+  }, {
+    key: POINT_TRAP_LAYER_CHECKBOX_KEY,
+    label: 'Point Trap',
+    checked: state.mandelbrot.pointTrapLayer,
   },
 ];
 
@@ -85,6 +96,8 @@ const mapDispatchToProps = (dispatch) => ({
   onCheckboxChange: (id) => {
     switch (id) {
       case GAUSSIAN_BLUR_CHECKBOX_KEY: dispatch(toggleGaussianBlur()); break;
+      case ORIGINAL_LAYER_CHECKBOX_KEY: dispatch(toggleOriginalLayer()); break;
+      case POINT_TRAP_LAYER_CHECKBOX_KEY: dispatch(togglePointTrapLayer()); break;
       default: break;
     }
   },

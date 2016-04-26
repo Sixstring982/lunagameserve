@@ -60,3 +60,11 @@ export const initialize = () => ({
 export const toggleGaussianBlur = () => ({
   type: 'TOGGLE_GAUSSIAN_BLUR',
 });
+
+export const toggleOriginalLayer = () => ({
+  type: 'TOGGLE_ORIGINAL_LAYER',
+});
+
+export const togglePointTrapLayer = () => ({
+  type: 'TOGGLE_POINT_TRAP_LAYER',
+});

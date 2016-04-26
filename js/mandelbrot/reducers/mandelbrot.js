@@ -17,6 +17,8 @@ const INITIAL_STATE = {
   window: INITIAL_WINDOW,
   iterations: 5,
   gaussianBlur: false,
+  originalLayer: true,
+  pointTrapLayer: false,
 };
 
 const renderGL = (state) => {
@@ -36,6 +38,8 @@ const renderGL = (state) => {
       });
 
       program.setUniform1i('gaussianBlur', state.gaussianBlur);
+      program.setUniform1i('originalLayer', state.originalLayer);
+      program.setUniform1i('pointTrapLayer', state.pointTrapLayer);
 
       const NAMES = ['redChannel', 'greenChannel', 'blueChannel'];
       const buildVector = (x, y, z, w) => ({
@@ -105,6 +109,14 @@ const mandelbrot = (state = INITIAL_STATE, action) => {
     case 'TOGGLE_GAUSSIAN_BLUR':
       return renderReturn(Object.assign({}, state, {
         gaussianBlur: !state.gaussianBlur,
+      }));
+    case 'TOGGLE_ORIGINAL_LAYER':
+      return renderReturn(Object.assign({}, state, {
+        originalLayer: !state.originalLayer,
+      }));
+    case 'TOGGLE_POINT_TRAP_LAYER':
+      return renderReturn(Object.assign({}, state, {
+        pointTrapLayer: !state.pointTrapLayer,
       }));
     case 'SET_PALETTE_CHANNEL':
       return renderWithPaletteReturn(Object.assign({}, state, {
